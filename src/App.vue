@@ -8,7 +8,6 @@
         <v-list-item
           v-for="item in menuItems"
           :key="item.title"
-          router
           :to="item.link"
         >
           <v-list-item-action>
@@ -37,7 +36,6 @@
           plain
           v-for="item in menuItems"
           :key="item.title"
-          router
           :to="item.link"
         >
           <v-icon left>

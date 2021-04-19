@@ -33,15 +33,11 @@
 <script>
 export default {
   name: 'Home',
-
-  data: () => ({
-    meetups: [
-      { imageURL: 'https://static.rentcars.com/imagens/modules/localidade/about/739-desktop-location-description.png', id: '1', title: 'Meetup in Boston' },
-      { imageURL: 'https://thumbnails.expedia.com/WAIOLrW6W9eerDtrV8bChFwICn4=/536x384/smart/filters:quality(60)/a.cdn-hotels.com/cos/heroimage/Toronto_EEX15P.jpg', id: '2', title: 'Meetup in Toronto' },
-      { imageURL: 'https://media-cdn.tripadvisor.com/media/photo-s/0e/9a/e3/1d/freedom-tower.jpg', id: '3', title: 'Meetup in New York' },
-      { imageURL: 'https://www.swissotel.com/assets/0/92/2119/2120/2159/2161/6442451653/842c3170-fbea-4dcb-a655-c82988987467.jpg', id: '4', title: 'Meetup in Chicago' }
-    ]
-  }),
+  computed: {
+    meetups () {
+      return this.$store.getters.featuredMeetups
+    }
+  },
   methods: {
     onLoadMeetup (id) {
       this.$router.push('/meetups/' + id)

@@ -4,14 +4,14 @@
       <v-col>
         <v-card>
           <v-card-title>
-              Data Analysis Meetup
+            {{ meetup.title }}
           </v-card-title>
           <v-img
-            src="https://static.rentcars.com/imagens/modules/localidade/about/739-desktop-location-description.png"
+            :src="meetup.imageURL"
             height="400px"
           ></v-img>
           <v-card-subtitle class="pb-0">
-            20th April 2021
+            {{ meetup.date }}
           </v-card-subtitle>
 
           <v-card-text class="text--primary">
@@ -34,3 +34,14 @@
     </v-row>
   </v-container>
 </template>
+
+<script>
+export default {
+  props: ['id'],
+  computed: {
+    meetup () {
+      return this.$store.getters.loadedMeetup(this.id)
+    }
+  }
+}
+</script>

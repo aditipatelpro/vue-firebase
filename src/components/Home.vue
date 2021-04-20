@@ -14,7 +14,7 @@
           <v-carousel-item
             v-for="meetup in meetups"
             :key="meetup.id"
-            :src="meetup.imageURL"
+            :src="meetup.imageUrl"
             reverse-transition="fade-transition"
             transition="fade-transition"
             @click="onLoadMeetup(meetup.id)"

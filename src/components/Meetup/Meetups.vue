@@ -7,7 +7,7 @@
             <v-row>
               <v-col cols="5">
                 <v-img
-                  :src= "meetup.imageURL"
+                  :src= "meetup.imageUrl"
                   height="150px"
                 ></v-img>
               </v-col>

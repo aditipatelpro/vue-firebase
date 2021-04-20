@@ -7,7 +7,7 @@
             {{ meetup.title }}
           </v-card-title>
           <v-img
-            :src="meetup.imageURL"
+            :src="meetup.imageUrl"
             height="400px"
           ></v-img>
           <v-card-subtitle class="pb-0">

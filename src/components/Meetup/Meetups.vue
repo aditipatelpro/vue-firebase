@@ -16,7 +16,7 @@
                   {{ meetup.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  {{ meetup.date }}
+                  {{ meetup.date | date}}
                 </v-card-subtitle>
                 <v-card-actions>
                   <v-btn plain :to="'/meetups/' + meetup.id">

@@ -58,6 +58,21 @@
             </v-col>
           </v-row>
           <v-row>
+            <v-col sm="12" md="6" offset-md="3" >
+              <h4>Choose a Date and Time</h4>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col sm="12" md="6" offset-md="3" >
+              <v-date-picker v-model="date"></v-date-picker>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col sm="12" md="6" offset-md="3" >
+              <v-time-picker v-model="time"></v-time-picker>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col cols="12" offset="5">
               <v-btn
                 color="primary"
@@ -76,16 +91,32 @@
 <script>
 export default {
   data: () => ({
+    date: '',
     description: '',
     location: '',
     imageUrl: '',
+    time: new Date(),
     title: ''
   }),
 
   computed: {
     formIsValid () {
       return this.description !== '' && this.imageUrl !== '' && this.location !== '' && this.title !== ''
+    },
+    submittableDateTime () {
+      const date = new Date(this.date)
+      if (typeof this.time === 'string') {
+        const hours = this.time.match(/^(\d+)/)[1]
+        const minutes = this.time.match(/:(\d+)/)[1]
+        date.setHours(hours)
+        date.setMinutes(minutes)
+      } else {
+        date.setHours(this.time.getHours())
+        date.setMinutes(this.time.getMinutes())
+      }
+      return date
     }
+
   },
 
   methods: {
@@ -94,7 +125,7 @@ export default {
         return
       }
       const meetupData = {
-        date: new Date(),
+        date: this.submittableDateTime,
         description: this.description,
         imageUrl: this.imageUrl,
         location: this.location,

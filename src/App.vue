@@ -66,8 +66,8 @@ export default {
       { icon: 'mdi-account-group', title: 'View Meetups', link: '/meetups' },
       { icon: 'mdi-map-marker', title: 'Organize Meetups', link: '/meetup/new' },
       { icon: 'mdi-account-circle', title: 'Profile', link: '/profile' },
-      { icon: 'mdi-account', title: 'Sign up', link: '/signin' },
-      { icon: 'mdi-lock-open', title: 'Sign in', link: '/signup' }
+      { icon: 'mdi-account', title: 'Sign up', link: '/signup' },
+      { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' }
 
     ]
   })

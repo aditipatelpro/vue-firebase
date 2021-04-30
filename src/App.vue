@@ -28,7 +28,7 @@
       </v-app-bar-nav-icon>
 
       <v-toolbar-title>
-        <router-link to="/" tag="span">DevMeetup</router-link>
+        <router-link to="/">DevMeetup</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="d-none d-sm-flex">

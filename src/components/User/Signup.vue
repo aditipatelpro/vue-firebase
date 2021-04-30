@@ -69,6 +69,8 @@ export default {
   },
   methods: {
     onSignup () {
+      // console.log(this.email, this.password)
+      this.$store.dispatch('signUserUp', { email: this.email, password: this.password })
     }
   }
 }

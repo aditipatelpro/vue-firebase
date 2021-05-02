@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-row v-if="error">
+      <v-col cols="12" sm ="6" offset-sm="3">
+        <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12" sm ="6" offset-sm="3">
         <v-card>
@@ -66,6 +71,9 @@ export default {
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Passwords donot match' : ''
     },
+    error () {
+      return this.$store.getters.error
+    },
     user () {
       return this.$store.getters.user
     }
@@ -80,6 +88,9 @@ export default {
   methods: {
     onSignup () {
       this.$store.dispatch('signUserUp', { email: this.email, password: this.password })
+    },
+    onDismissed () {
+      this.$store.dispatch('clearError')
     }
   }
 }

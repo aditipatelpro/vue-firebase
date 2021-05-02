@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
-// import 'firebase/auth'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    error: null,
     loadedMeetups: [
       {
         date: new Date(),
@@ -41,14 +41,21 @@ export default new Vuex.Store({
         title: 'Meetup in Chicago'
       }
     ],
-    user: {
-      id: 'u1',
-      registeredMeetups: ['1', '2']
-    }
+    loading: false,
+    user: null
   },
   mutations: {
     createMeetup (state, payload) {
       state.loadedMeetups.push(payload)
+    },
+    clearError (state) {
+      state.error = null
+    },
+    setLoading (state, payload) {
+      state.loading = payload
+    },
+    setError (state, payload) {
+      state.error = payload
     },
     setUser (state, payload) {
       state.user = payload
@@ -68,9 +75,12 @@ export default new Vuex.Store({
       commit('createMeetup', meetup)
     },
     signUserUp ({ commit }, payload) {
+      commit('setLoading', true)
+      commit('clearError')
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
+            commit('setLoading', false)
             const newUser = {
               id: user.uid,
               registeredMeetups: []
@@ -80,14 +90,19 @@ export default new Vuex.Store({
         )
         .catch(
           error => {
+            commit('setLoading', false)
+            commit('setError', error)
             console.log(error)
           }
         )
     },
     signUserIn ({ commit }, payload) {
+      commit('setLoading', true)
+      commit('clearError')
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
+            commit('setLoading', false)
             const newUser = {
               id: user.uid,
               registeredMeetups: []
@@ -96,15 +111,25 @@ export default new Vuex.Store({
           }
         ).catch(
           error => {
+            commit('setLoading', false)
+            commit('setError', error)
             console.log(error)
           }
         )
     }
-
   },
   modules: {
   },
   getters: {
+    error (state) {
+      return state.error
+    },
+    loading (state) {
+      return state.loading
+    },
+    user (state) {
+      return state.user
+    },
     featuredMeetups (state, getters) {
       return getters.loadedMeetups.slice(0, 5)
     },
@@ -119,10 +144,6 @@ export default new Vuex.Store({
       return state.loadedMeetups.sort((meetupA, meetupB) => {
         return meetupA.date > meetupB.date
       })
-    },
-    user (state) {
-      return state.user
     }
-
   }
 })

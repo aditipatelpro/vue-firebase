@@ -44,23 +44,29 @@ export default new Vuex.Store({
     loading: false,
     user: null
   },
+
   mutations: {
     createMeetup (state, payload) {
       state.loadedMeetups.push(payload)
     },
+
     clearError (state) {
       state.error = null
     },
+
     setLoading (state, payload) {
       state.loading = payload
     },
+
     setError (state, payload) {
       state.error = payload
     },
+
     setUser (state, payload) {
       state.user = payload
     }
   },
+
   actions: {
     createMeetup ({ commit }, payload) {
       const meetup = {
@@ -74,6 +80,7 @@ export default new Vuex.Store({
       // Firebase stuff
       commit('createMeetup', meetup)
     },
+
     signUserUp ({ commit }, payload) {
       commit('setLoading', true)
       commit('clearError')
@@ -96,6 +103,7 @@ export default new Vuex.Store({
           }
         )
     },
+
     signUserIn ({ commit }, payload) {
       commit('setLoading', true)
       commit('clearError')
@@ -124,15 +132,19 @@ export default new Vuex.Store({
     error (state) {
       return state.error
     },
+
     loading (state) {
       return state.loading
     },
+
     user (state) {
       return state.user
     },
+
     featuredMeetups (state, getters) {
       return getters.loadedMeetups.slice(0, 5)
     },
+
     loadedMeetup (state) {
       return (meetupId) => {
         return state.loadedMeetups.find((meetup) => {
@@ -140,6 +152,7 @@ export default new Vuex.Store({
         })
       }
     },
+
     loadedMeetups (state) {
       return state.loadedMeetups.sort((meetupA, meetupB) => {
         return meetupA.date > meetupB.date

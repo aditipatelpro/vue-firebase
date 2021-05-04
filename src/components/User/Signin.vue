@@ -5,35 +5,29 @@
         <v-card>
           <v-card-text>
             <v-container>
-              <form @submit.prevent="onSignin">
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field
-                      name="email"
-                      label="E-Mail"
-                      id="email"
-                      v-model="email"
-                      type="email"
-                      required></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field
-                      name="password"
-                      label="Password"
-                      id="password"
-                      v-model="password"
-                      type="password"
-                      required></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" offset="5">
-                    <v-btn type="submit" color="primary">Sign in</v-btn>
-                  </v-col>
-                </v-row>
-              </form>
+              <v-form @submit.prevent="onSignin">
+                <v-text-field
+                  name="email"
+                  label="E-Mail"
+                  id="email"
+                  v-model="email"
+                  type="email"
+                  required
+                ></v-text-field>
+
+                <v-text-field
+                  name="password"
+                  label="Password"
+                  id="password"
+                  v-model="password"
+                  type="password"
+                  required
+                ></v-text-field>
+
+                <div class="d-flex justify-center">
+                  <v-btn type="submit" color="primary">Sign in</v-btn>
+                </div>
+              </v-form>
             </v-container>
           </v-card-text>
         </v-card>
@@ -41,7 +35,6 @@
     </v-row>
   </v-container>
 </template>
-
 <script>
 export default {
   data () {

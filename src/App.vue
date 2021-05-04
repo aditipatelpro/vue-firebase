@@ -15,6 +15,7 @@
               {{ item.icon }}
             </v-icon>
           </v-list-item-action>
+
           <v-list-item-action-text>
             {{item.title}}
           </v-list-item-action-text>
@@ -28,9 +29,15 @@
       </v-app-bar-nav-icon>
 
       <v-toolbar-title>
-        <router-link to="/">DevMeetup</router-link>
+        <router-link to="/" custom v-slot="{ navigate }">
+          <span @click="navigate" @keypress.enter="navigate" role="link">
+              DevMeetup
+          </span>
+        </router-link>
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
+
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn
           plain
@@ -53,12 +60,8 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld'
 export default {
   name: 'App',
-
-  components: {
-  },
 
   data: () => ({
     drawer: false,
@@ -68,7 +71,6 @@ export default {
       { icon: 'mdi-account-circle', title: 'Profile', link: '/profile' },
       { icon: 'mdi-account', title: 'Sign up', link: '/signup' },
       { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' }
-
     ]
   })
 }

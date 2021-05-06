@@ -1,47 +1,63 @@
 <template>
   <v-container>
     <v-row v-if="error">
-      <v-col cols="12" sm ="6" offset-sm="3">
-        <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+      <v-col
+        cols="12"
+        sm="6"
+        offset-sm="3"
+      >
+        <app-alert
+          :text="error.message"
+          @dismissed="onDismissed"
+        />
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col cols="12" sm ="6" offset-sm="3">
+      <v-col
+        cols="12"
+        sm="6"
+        offset-sm="3"
+      >
         <v-card>
           <v-card-text>
             <v-container>
               <v-form @submit.prevent="onSignup">
-                  <v-text-field
-                    name="email"
-                    label="E-Mail"
-                    id="email"
-                    v-model="email"
-                    type="email"
-                    required
-                  ></v-text-field>
+                <v-text-field
+                  id="email"
+                  v-model="email"
+                  name="email"
+                  label="E-Mail"
+                  type="email"
+                  required
+                />
 
-                  <v-text-field
-                    name="password"
-                    label="Password"
-                    id="password"
-                    v-model="password"
-                    type="password"
-                    required
-                  ></v-text-field>
+                <v-text-field
+                  id="password"
+                  v-model="password"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  required
+                />
 
-                  <v-text-field
-                    name="confirmPassword"
-                    label="Confirm Password"
-                    id="confirmPassword"
-                    v-model="confirmPassword"
-                    type="password"
-                    :rules="[comparePasswords]"
-                  ></v-text-field>
+                <v-text-field
+                  id="confirmPassword"
+                  v-model="confirmPassword"
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  :rules="[comparePasswords]"
+                />
 
-                  <div class="d-flex justify-center">
-                    <v-btn type="submit" color="primary">Sign up</v-btn>
-                  </div>
+                <div class="d-flex justify-center">
+                  <v-btn
+                    type="submit"
+                    color="primary"
+                  >
+                    Sign up
+                  </v-btn>
+                </div>
               </v-form>
             </v-container>
           </v-card-text>
@@ -53,44 +69,44 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       email: '',
       password: '',
-      confirmPassword: ''
-    }
+      confirmPassword: '',
+    };
   },
 
   computed: {
-    comparePasswords () {
-      return this.password !== this.confirmPassword ? 'Passwords donot match' : ''
+    comparePasswords() {
+      return this.password !== this.confirmPassword ? 'Passwords donot match' : '';
     },
 
-    error () {
-      return this.$store.getters.error
+    error() {
+      return this.$store.getters.error;
     },
 
-    user () {
-      return this.$store.getters.user
-    }
+    user() {
+      return this.$store.getters.user;
+    },
   },
 
   watch: {
-    user (value) {
+    user(value) {
       if (value !== null && value !== undefined) {
-        this.$router.push('/')
+        this.$router.push('/');
       }
-    }
+    },
   },
 
   methods: {
-    onSignup () {
-      this.$store.dispatch('signUserUp', { email: this.email, password: this.password })
+    onSignup() {
+      this.$store.dispatch('signUserUp', { email: this.email, password: this.password });
     },
 
-    onDismissed () {
-      this.$store.dispatch('clearError')
-    }
-  }
-}
+    onDismissed() {
+      this.$store.dispatch('clearError');
+    },
+  },
+};
 </script>

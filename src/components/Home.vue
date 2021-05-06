@@ -1,12 +1,12 @@
 <template>
   <v-container>
-
     <div class="d-flex justify-center mb-6">
       <v-btn
         class="text-xs-center text-sm-right mx-4"
         color="primary"
         large
-        router to="/meetups"
+        router
+        to="/meetups"
       >
         Explore Meetups
       </v-btn>
@@ -15,7 +15,8 @@
         class="text-xs-center text-sm-right"
         color="primary"
         large
-        router to="/meetup/new"
+        router
+        to="/meetup/new"
       >
         Organize Meetups
       </v-btn>
@@ -30,7 +31,7 @@
           reverse-transition="fade-transition"
           transition="fade-transition"
           @click="onLoadMeetup(meetup.id)"
-        ></v-carousel-item>
+        />
       </v-carousel>
     </div>
 
@@ -44,15 +45,15 @@
 export default {
   name: 'Home',
   computed: {
-    meetups () {
-      return this.$store.getters.featuredMeetups
-    }
+    meetups() {
+      return this.$store.getters.featuredMeetups;
+    },
   },
 
   methods: {
-    onLoadMeetup (id) {
-      this.$router.push('/meetups/' + id)
-    }
-  }
-}
+    onLoadMeetup(id) {
+      this.$router.push(`/meetups/${id}`);
+    },
+  },
+};
 </script>

@@ -17,36 +17,45 @@
           </v-list-item-action>
 
           <v-list-item-action-text>
-            {{item.title}}
+            {{ item.title }}
           </v-list-item-action-text>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"
-        class="d-sm-none">
-      </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="d-sm-none"
+        @click="drawer = !drawer"
+      />
 
       <v-toolbar-title>
-        <router-link to="/" custom v-slot="{ navigate }">
-          <span @click="navigate" @keypress.enter="navigate" role="link">
-              DevMeetup
+        <router-link
+          v-slot="{ navigate }"
+          to="/"
+          custom
+        >
+          <span
+            role="link"
+            @click="navigate"
+            @keypress.enter="navigate"
+          >
+            DevMeetup
           </span>
         </router-link>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn
-          plain
           v-for="item in menuItems"
           :key="item.title"
+          plain
           :to="item.link"
         >
           <v-icon left>
-            {{item.icon}}
+            {{ item.icon }}
           </v-icon>
           {{ item.title }}
         </v-btn>
@@ -54,7 +63,7 @@
     </v-app-bar>
 
     <v-main>
-      <router-view></router-view>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -70,8 +79,8 @@ export default {
       { icon: 'mdi-map-marker', title: 'Organize Meetups', link: '/meetup/new' },
       { icon: 'mdi-account-circle', title: 'Profile', link: '/profile' },
       { icon: 'mdi-account', title: 'Sign up', link: '/signup' },
-      { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' }
-    ]
-  })
-}
+      { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' },
+    ],
+  }),
+};
 </script>

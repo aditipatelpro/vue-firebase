@@ -1,31 +1,40 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm ="6" offset-sm="3">
+      <v-col
+        cols="12"
+        sm="6"
+        offset-sm="3"
+      >
         <v-card>
           <v-card-text>
             <v-container>
               <v-form @submit.prevent="onSignin">
                 <v-text-field
-                  name="email"
-                  label="E-Mail"
                   id="email"
                   v-model="email"
+                  name="email"
+                  label="E-Mail"
                   type="email"
                   required
-                ></v-text-field>
+                />
 
                 <v-text-field
-                  name="password"
-                  label="Password"
                   id="password"
                   v-model="password"
+                  name="password"
+                  label="Password"
                   type="password"
                   required
-                ></v-text-field>
+                />
 
                 <div class="d-flex justify-center">
-                  <v-btn type="submit" color="primary">Sign in</v-btn>
+                  <v-btn
+                    type="submit"
+                    color="primary"
+                  >
+                    Sign in
+                  </v-btn>
                 </div>
               </v-form>
             </v-container>
@@ -37,28 +46,28 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       email: '',
-      password: ''
-    }
+      password: '',
+    };
   },
   computed: {
-    user () {
-      return this.$store.getters.user
-    }
+    user() {
+      return this.$store.getters.user;
+    },
   },
   watch: {
-    user (value) {
+    user(value) {
       if (value !== null && value !== undefined) {
-        this.$router.push('/')
+        this.$router.push('/');
       }
-    }
+    },
   },
   methods: {
-    onSignin () {
-      this.$store.dispatch('signUserIn', { email: this.email, password: this.password })
-    }
-  }
-}
+    onSignin() {
+      this.$store.dispatch('signUserIn', { email: this.email, password: this.password });
+    },
+  },
+};
 </script>

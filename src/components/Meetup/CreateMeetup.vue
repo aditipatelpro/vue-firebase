@@ -1,57 +1,68 @@
 <template>
   <v-container>
     <div class="d-flex justify-center">
-      <h3 class="blue-grey--text">Create a New Meetup</h3>
+      <h3 class="blue-grey--text">
+        Create a New Meetup
+      </h3>
     </div>
 
     <v-row>
-      <v-col cols="12" sm ="7" offset-sm="3">
+      <v-col
+        cols="12"
+        sm="7"
+        offset-sm="3"
+      >
         <div class="justify-center">
           <v-form @submit.prevent="onCreateMeetup">
             <v-text-field
-              name="title"
-              label="Title"
               id="title"
               v-model="title"
+              name="title"
+              label="Title"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
-              name="location"
-              label="Location"
               id="location"
               v-model="location"
+              name="location"
+              label="Location"
               required
-            ></v-text-field>
+            />
 
             <v-text-field
-              name="imageUrl"
-              label="Image URL"
               id="image-url"
               v-model="imageUrl"
+              name="imageUrl"
+              label="Image URL"
               required
-            ></v-text-field>
+            />
 
-            <img :src="imageUrl" height="150">
+            <img
+              :alt="imageUrl"
+              :src="imageUrl"
+              height="150"
+            >
 
             <v-textarea
-              name="description"
-              label="Description"
               id="description"
               v-model="description"
+              name="description"
+              label="Description"
               required
-            ></v-textarea>
+            />
 
             <h4>Choose a Date and Time</h4>
 
-            <v-date-picker v-model="date"></v-date-picker>
-            <v-time-picker v-model="time"></v-time-picker>
+            <v-date-picker v-model="date" />
+            <v-time-picker v-model="time" />
 
             <v-btn
               color="primary"
               :disabled="!formIsValid"
               type="submit"
-            >Create Meetup
+            >
+              Create Meetup
             </v-btn>
           </v-form>
         </div>
@@ -68,35 +79,35 @@ export default {
     location: '',
     imageUrl: '',
     time: new Date(),
-    title: ''
+    title: '',
   }),
 
   computed: {
-    formIsValid () {
-      return this.description !== '' && this.imageUrl !== '' && this.location !== '' && this.title !== ''
+    formIsValid() {
+      return this.description !== '' && this.imageUrl !== '' && this.location !== '' && this.title !== '';
     },
 
-    submittableDateTime () {
-      const date = new Date(this.date)
+    submittableDateTime() {
+      const date = new Date(this.date);
 
       if (typeof this.time === 'string') {
-        const hours = this.time.match(/^(\d+)/)[1]
-        const minutes = this.time.match(/:(\d+)/)[1]
-        date.setHours(hours)
-        date.setMinutes(minutes)
+        const hours = this.time.match(/^(\d+)/)[1];
+        const minutes = this.time.match(/:(\d+)/)[1];
+        date.setHours(hours);
+        date.setMinutes(minutes);
       } else {
-        date.setHours(this.time.getHours())
-        date.setMinutes(this.time.getMinutes())
+        date.setHours(this.time.getHours());
+        date.setMinutes(this.time.getMinutes());
       }
 
-      return date
-    }
+      return date;
+    },
   },
 
   methods: {
-    onCreateMeetup () {
+    onCreateMeetup() {
       if (!this.formIsValid) {
-        return
+        return;
       }
 
       const meetupData = {
@@ -104,12 +115,12 @@ export default {
         description: this.description,
         imageUrl: this.imageUrl,
         location: this.location,
-        title: this.title
-      }
+        title: this.title,
+      };
 
-      this.$store.dispatch('createMeetup', meetupData)
-      this.$router.push('/meetups')
-    }
-  }
-}
+      this.$store.dispatch('createMeetup', meetupData);
+      this.$router.push('/meetups');
+    },
+  },
+};
 </script>

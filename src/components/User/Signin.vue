@@ -1,8 +1,15 @@
 <template>
   <v-container>
     <v-row v-if="error">
-      <v-col cols="12" sm ="6" offset-sm="3">
-        <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+      <v-col
+        cols="12"
+        sm="6"
+        offset-sm="3"
+      >
+        <app-alert
+          :text="error.message"
+          @dismissed="onDismissed"
+        />
       </v-col>
     </v-row>
 
@@ -59,13 +66,13 @@ export default {
     };
   },
   computed: {
-    error () {
-      return this.$store.getters.error
+    error() {
+      return this.$store.getters.error;
     },
 
-    user () {
-      return this.$store.getters.user
-    }
+    user() {
+      return this.$store.getters.user;
+    },
   },
   watch: {
     user(value) {
@@ -75,12 +82,12 @@ export default {
     },
   },
   methods: {
-    onSignin () {
-      this.$store.dispatch('signUserIn', { email: this.email, password: this.password })
+    onSignin() {
+      this.$store.dispatch('signUserIn', { email: this.email, password: this.password });
     },
-    onDismissed () {
-      this.$store.dispatch('clearError')
-    }
-  }
-}
+    onDismissed() {
+      this.$store.dispatch('clearError');
+    },
+  },
+};
 </script>

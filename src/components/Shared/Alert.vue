@@ -4,8 +4,8 @@
     close-text="Close Alert"
     dismissible
     type="error"
-    @input="onClose"
     :value="true"
+    @input="onClose"
   >
     {{ text }}
   </v-alert>
@@ -13,11 +13,17 @@
 
 <script>
 export default {
-  props: ['text'],
+  props: {
+    text: {
+      type: String,
+      required: true,
+    },
+  },
+
   methods: {
-    onClose () {
-      this.$emit('dismissed')
-    }
-  }
-}
+    onClose() {
+      this.$emit('dismissed');
+    },
+  },
+};
 </script>

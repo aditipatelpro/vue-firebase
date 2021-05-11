@@ -54,16 +54,28 @@
 
             <h4>Choose a Date and Time</h4>
 
-            <v-date-picker v-model="date" />
-            <v-time-picker v-model="time" />
+            <div>
+              <v-date-picker
+                v-model="date"
+                class="mr-1"
+                width="245"
+              />
+              <v-time-picker
+                v-model="time"
+                class="ml-1"
+                width="245"
+              />
+            </div>
 
-            <v-btn
-              color="primary"
-              :disabled="!formIsValid"
-              type="submit"
-            >
-              Create Meetup
-            </v-btn>
+            <div class="d-flex justify-center">
+              <v-btn
+                color="primary"
+                :disabled="!formIsValid"
+                type="submit"
+              >
+                Create Meetup
+              </v-btn>
+            </div>
           </v-form>
         </div>
       </v-col>

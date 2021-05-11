@@ -30,5 +30,8 @@ new Vue({
   router,
   store,
   vuetify,
+  created() {
+    this.$store.dispatch('loadMeetups');
+  },
   render: (h) => h(App),
 }).$mount('#app');

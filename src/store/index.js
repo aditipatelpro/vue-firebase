@@ -68,8 +68,13 @@ export default new Vuex.Store({
   },
 
   actions: {
-    createMeetup({ commit }, payload) {
+    autoSignIn({ commit }, payload) {
+      commit('setUser', { id: payload.uid, registeredMeetups: [] });
+    },
+
+    createMeetup({ commit }, getters, payload) {
       const meetup = {
+        creatorId: getters.user.id,
         date: payload.date.toISOString(),
         description: payload.description,
         imageUrl: payload.imageUrl,
@@ -102,11 +107,12 @@ export default new Vuex.Store({
           // eslint-disable-next-line guard-for-in,no-restricted-syntax
           for (const key in obj) {
             meetups.push({
-              id: key,
-              title: obj[key].title,
-              description: obj[key].description,
-              imageUrl: obj[key].imageUrl,
+              creatorId: obj[key].creatorId,
               date: obj[key].date,
+              description: obj[key].description,
+              id: key,
+              imageUrl: obj[key].imageUrl,
+              title: obj[key].title,
 
             });
             commit('setLoadedMeetups', meetups);
@@ -117,6 +123,11 @@ export default new Vuex.Store({
             console.log(error);
           },
         );
+    },
+
+    logout({ commit }) {
+      firebase.auth().signOut();
+      commit('setUser', null);
     },
 
     signUserUp({ commit }, payload) {
@@ -156,8 +167,10 @@ export default new Vuex.Store({
         );
     },
   },
+
   modules: {
   },
+
   getters: {
     error(state) {
       return state.error;

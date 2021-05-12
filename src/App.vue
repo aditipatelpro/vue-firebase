@@ -20,6 +20,21 @@
             {{ item.title }}
           </v-list-item-action-text>
         </v-list-item>
+
+        <v-list-item
+          v-if="userIsAuthenticated"
+          @click="onLogout"
+        >
+          <v-list-item-action>
+            <v-icon>
+              mdi-logout-variant
+            </v-icon>
+          </v-list-item-action>
+
+          <v-list-item-action-text>
+            Logout
+          </v-list-item-action-text>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -59,6 +74,16 @@
           </v-icon>
           {{ item.title }}
         </v-btn>
+        <v-btn
+          v-if="userIsAuthenticated"
+          plain
+          @click="onLogout"
+        >
+          <v-icon left>
+            mdi-logout-variant
+          </v-icon>
+          Logout
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -74,13 +99,32 @@ export default {
 
   data: () => ({
     drawer: false,
-    menuItems: [
-      { icon: 'mdi-account-group', title: 'View Meetups', link: '/meetups' },
-      { icon: 'mdi-map-marker', title: 'Organize Meetups', link: '/meetup/new' },
-      { icon: 'mdi-account-circle', title: 'Profile', link: '/profile' },
-      { icon: 'mdi-account', title: 'Sign up', link: '/signup' },
-      { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' },
-    ],
   }),
+
+  computed: {
+    menuItems() {
+      let menuItems = [
+        { icon: 'mdi-account', title: 'Sign up', link: '/signup' },
+        { icon: 'mdi-lock-open', title: 'Sign in', link: '/signin' },
+      ];
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          { icon: 'mdi-account-group', title: 'View Meetups', link: '/meetups' },
+          { icon: 'mdi-map-marker', title: 'Organize Meetups', link: '/meetup/new' },
+          { icon: 'mdi-account-circle', title: 'Profile', link: '/profile' },
+        ];
+      }
+      return menuItems;
+    },
+    userIsAuthenticated() {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined;
+    },
+  },
+
+  methods: {
+    onLogout() {
+      this.$store.dispatch('logout');
+    },
+  },
 };
 </script>

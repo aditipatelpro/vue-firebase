@@ -30,12 +30,12 @@
               required
             />
 
-            <v-text-field
-              id="image-url"
-              v-model="imageUrl"
-              name="imageUrl"
-              label="Image URL"
-              required
+            <v-file-input
+              v-model="files"
+              accept="image/*"
+              label="Upload Image"
+              prepend-icon="mdi-camera"
+              @change="onFilePickup"
             />
 
             <img
@@ -52,18 +52,20 @@
               required
             />
 
-            <h4>Choose a Date and Time</h4>
+            <label>
+              Choose Date and Time
+            </label>
 
-            <div>
+            <div class="mt-4">
               <v-date-picker
                 v-model="date"
-                class="mr-1"
-                width="245"
+                class="mr-5"
+                width="310"
               />
               <v-time-picker
                 v-model="time"
-                class="ml-1"
-                width="245"
+                class="ml-5"
+                width="310"
               />
             </div>
 
@@ -88,8 +90,10 @@ export default {
   data: () => ({
     date: '',
     description: '',
-    location: '',
+    files: [],
+    image: null,
     imageUrl: '',
+    location: '',
     time: new Date(),
     title: '',
   }),
@@ -111,7 +115,6 @@ export default {
         date.setHours(this.time.getHours());
         date.setMinutes(this.time.getMinutes());
       }
-
       return date;
     },
   },
@@ -122,16 +125,29 @@ export default {
         return;
       }
 
+      if (!this.image) {
+        return;
+      }
+
       const meetupData = {
         date: this.submittableDateTime,
         description: this.description,
-        imageUrl: this.imageUrl,
+        image: this.image,
         location: this.location,
         title: this.title,
       };
-
+      console.log(meetupData);
       this.$store.dispatch('createMeetup', meetupData);
       this.$router.push('/meetups');
+    },
+
+    onFilePickup() {
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        this.imageUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(this.files);
+      this.image = this.files;
     },
   },
 };

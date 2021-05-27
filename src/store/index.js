@@ -72,33 +72,45 @@ export default new Vuex.Store({
       commit('setUser', { id: payload.uid, registeredMeetups: [] });
     },
 
-    createMeetup({ commit }, getters, payload) {
+    // eslint-disable-next-line no-unused-vars
+    createMeetup({ commit, getters }, payload) {
+      // console.log(payload);
       const meetup = {
         creatorId: getters.user.id,
         date: payload.date.toISOString(),
         description: payload.description,
-        imageUrl: payload.imageUrl,
         location: payload.location,
         title: payload.title,
       };
+      let imageUrl;
+      let key;
       firebase.database().ref('meetups').push(meetup)
-        .then(
-          (data) => {
-            const { key } = data;
-            commit('createMeetup', {
-              ...meetup,
-              id: key,
-            });
-          },
-        )
-        .catch(
-          (error) => {
-            console.log(error);
-          },
-        );
+        .then((data) => {
+          key = data.key;
+          return key;
+        })
+        // eslint-disable-next-line no-shadow
+        .then((key) => {
+          const filename = payload.image.name;
+          const ext = filename.slice(filename.lastIndexOf('.'));
+          return firebase.storage().ref(`meetups/${key}.${ext}`).put(payload.image);
+        })
+        .then((fileData) => {
+          imageUrl = fileData.metadata.fullPath;
+          return firebase.database().ref('meetups').child(key).update({ imageUrl });
+        })
+        .then(() => {
+          commit('createMeetup', {
+            ...meetup,
+            imageUrl,
+            id: key,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
-    // eslint-disable-next-line no-unused-vars
     loadMeetups({ commit }) {
       firebase.database().ref('meetups').once('value')
         .then((data) => {
@@ -130,6 +142,24 @@ export default new Vuex.Store({
       commit('setUser', null);
     },
 
+    signUserIn({ commit }, payload) {
+      commit('clearError');
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          (user) => {
+            const newUser = {
+              id: user.uid,
+              registeredMeetups: [],
+            };
+            commit('setUser', newUser);
+          },
+        ).catch(
+          (error) => {
+            commit('setError', error);
+          },
+        );
+    },
+
     signUserUp({ commit }, payload) {
       commit('clearError');
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -143,24 +173,6 @@ export default new Vuex.Store({
           },
         )
         .catch(
-          (error) => {
-            commit('setError', error);
-          },
-        );
-    },
-
-    signUserIn({ commit }, payload) {
-      commit('clearError');
-      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-        .then(
-          (user) => {
-            const newUser = {
-              id: user.uid,
-              registeredMeetups: [],
-            };
-            commit('setUser', newUser);
-          },
-        ).catch(
           (error) => {
             commit('setError', error);
           },

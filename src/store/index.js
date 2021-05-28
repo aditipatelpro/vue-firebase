@@ -90,15 +90,10 @@ export default new Vuex.Store({
           return key;
         })
         // eslint-disable-next-line no-shadow
-        .then((key) => {
-          const filename = payload.image.name;
-          const ext = filename.slice(filename.lastIndexOf('.'));
-          return firebase.storage().ref(`meetups/${key}.${ext}`).put(payload.image);
-        })
-        .then((fileData) => {
-          imageUrl = fileData.metadata.fullPath;
-          return firebase.database().ref('meetups').child(key).update({ imageUrl });
-        })
+        .then((key) => firebase.storage().ref(`meetups/${key}`).put(payload.image))
+        .then((image) => image.ref.getDownloadURL())
+        // eslint-disable-next-line no-shadow
+        .then((imageUrl) => firebase.database().ref('meetups').child(key).update({ imageUrl }))
         .then(() => {
           commit('createMeetup', {
             ...meetup,

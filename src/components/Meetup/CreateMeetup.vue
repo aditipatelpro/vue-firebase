@@ -136,7 +136,6 @@ export default {
         location: this.location,
         title: this.title,
       };
-      console.log(meetupData);
       this.$store.dispatch('createMeetup', meetupData);
       this.$router.push('/meetups');
     },

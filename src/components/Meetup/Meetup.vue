@@ -1,8 +1,12 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card v-if="meetup">
       <v-card-title>
         {{ meetup.title }}
+        <template v-if="userIsCreator">
+          <v-spacer />
+          <app-edit-meetup-details-dailog :meetup="meetup" />
+        </template>
       </v-card-title>
 
       <v-img
@@ -42,6 +46,15 @@ export default {
   computed: {
     meetup() {
       return this.$store.getters.loadedMeetup(this.id);
+    },
+
+    userIsAuthenticated() {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined;
+    },
+
+    userIsCreator() {
+      if (!this.userIsAuthenticated) return false;
+      return this.$store.getters.user.id === this.meetup.creatorId;
     },
   },
 };

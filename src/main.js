@@ -10,11 +10,13 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/auth';
 import AlertCmp from './components/Shared/Alert.vue';
+import EditMeetupDetailsDialog from './components/Meetup/Edit/EditMeetupDetailsDialog.vue';
 
 Vue.config.productionTip = false;
 
 Vue.filter('date', DateFilter);
 Vue.component('app-alert', AlertCmp);
+Vue.component('app-edit-meetup-details-dailog', EditMeetupDetailsDialog);
 
 const configOptions = {
   apiKey: 'AIzaSyAKauYLGRcF76GEDzvgn5GxdQM0ZoMt1tA',

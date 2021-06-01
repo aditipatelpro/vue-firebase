@@ -65,6 +65,21 @@ export default new Vuex.Store({
     setUser(state, payload) {
       state.user = payload;
     },
+
+    updateMeetup(state, payload) {
+      // eslint-disable-next-line no-shadow
+      const meetup = state.loadedMeetups.find((meetup) => meetup.id === payload.id);
+
+      if (payload.title) {
+        meetup.title = payload.title;
+      }
+      if (payload.description) {
+        meetup.description = payload.description;
+      }
+      if (payload.date) {
+        meetup.date = payload.date;
+      }
+    },
   },
 
   actions: {
@@ -72,9 +87,7 @@ export default new Vuex.Store({
       commit('setUser', { id: payload.uid, registeredMeetups: [] });
     },
 
-    // eslint-disable-next-line no-unused-vars
     createMeetup({ commit, getters }, payload) {
-      // console.log(payload);
       const meetup = {
         creatorId: getters.user.id,
         date: payload.date.toISOString(),
@@ -82,6 +95,7 @@ export default new Vuex.Store({
         location: payload.location,
         title: payload.title,
       };
+
       let imageUrl;
       let key;
       firebase.database().ref('meetups').push(meetup)
@@ -89,11 +103,15 @@ export default new Vuex.Store({
           key = data.key;
           return key;
         })
+
         // eslint-disable-next-line no-shadow
         .then((key) => firebase.storage().ref(`meetups/${key}`).put(payload.image))
+
         .then((image) => image.ref.getDownloadURL())
+
         // eslint-disable-next-line no-shadow
         .then((imageUrl) => firebase.database().ref('meetups').child(key).update({ imageUrl }))
+
         .then(() => {
           commit('createMeetup', {
             ...meetup,
@@ -101,6 +119,7 @@ export default new Vuex.Store({
             id: key,
           });
         })
+
         .catch((error) => {
           console.log(error);
         });
@@ -119,6 +138,7 @@ export default new Vuex.Store({
               description: obj[key].description,
               id: key,
               imageUrl: obj[key].imageUrl,
+              location: obj[key].location,
               title: obj[key].title,
 
             });
@@ -173,6 +193,23 @@ export default new Vuex.Store({
           },
         );
     },
+
+    updateMeetupData({ commit }, payload) {
+      const updateObj = {};
+
+      if (payload.title) updateObj.title = payload.title;
+      if (payload.description) updateObj.description = payload.description;
+      if (payload.date) updateObj.date = payload.date;
+
+      firebase.database().ref('meetups').child(payload.id).update(updateObj)
+        .then(() => {
+          commit('updateMeetup', payload);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
   },
 
   modules: {

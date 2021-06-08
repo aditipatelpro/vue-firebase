@@ -140,6 +140,29 @@ export default new Vuex.Store({
         });
     },
 
+    fetchUserDate({ commit, getters }) {
+      firebase.database().ref(`/users/${getters.user.id}/registrations`).once('value')
+        .then((data) => {
+          const dataPairs = data.val();
+          const registeredMeetups = [];
+          const swappedPairs = [];
+          // eslint-disable-next-line guard-for-in,no-restricted-syntax
+          for (const key in dataPairs) {
+            registeredMeetups.push(dataPairs[key]);
+            swappedPairs[dataPairs[key]] = key;
+          }
+          const updatedUser = {
+            id: getters.user.id,
+            registeredMeetups,
+            fbKeys: swappedPairs,
+          };
+          commit('setUser', updatedUser);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     loadMeetups({ commit }) {
       firebase.database().ref('meetups').once('value')
         .then((data) => {

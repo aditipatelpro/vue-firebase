@@ -5,7 +5,7 @@
         {{ meetup.title }}
         <template v-if="userIsCreator">
           <v-spacer />
-          <app-edit-meetup-details-dailog :meetup="meetup" />
+          <app-edit-meetup-details-dialog :meetup="meetup" />
         </template>
       </v-card-title>
 
@@ -16,6 +16,10 @@
 
       <v-card-subtitle class="pb-0">
         {{ meetup.date | date }} - {{ meetup.location }}
+        <!--        <app-edit-meetup-date-dialog-->
+        <!--          v-if="userIsCreator"-->
+        <!--          :meetup="meetup"-->
+        <!--        />-->
       </v-card-subtitle>
 
       <v-card-text class="text--primary">
@@ -26,9 +30,9 @@
 
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary">
-          Register
-        </v-btn>
+        <app-register-meetup-dialog
+          :meetup-id="meetup.id"
+        />
       </v-card-actions>
     </v-card>
   </v-container>

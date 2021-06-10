@@ -31,6 +31,7 @@ const configOptions = {
   appId: '1:197473540824:web:bf345ed87514abc1f615ad',
   measurementId: 'G-TYCSJYWC2L',
 };
+
 firebase.initializeApp(configOptions);
 new Vue({
   router,

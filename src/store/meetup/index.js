@@ -36,21 +36,15 @@ export default {
       // eslint-disable-next-line no-shadow
       const meetup = state.loadedMeetups.find((meetup) => meetup.id === payload.id);
 
-      if (payload.title) {
-        meetup.title = payload.title;
-      }
-      if (payload.description) {
-        meetup.description = payload.description;
-      }
-      if (payload.date) {
-        meetup.date = payload.date;
-      }
+      if (payload.title) meetup.title = payload.title;
+      if (payload.description) meetup.description = payload.description;
+      if (payload.date) meetup.date = payload.date;
     },
   },
 
   actions: {
 
-    createMeetup({ commit, getters }, payload) {
+    async createMeetup({ commit, getters }, payload) {
       const meetup = {
         creatorId: getters.user.id,
         date: payload.date.toISOString(),
@@ -59,78 +53,56 @@ export default {
         title: payload.title,
       };
 
-      let imageUrl;
-      let key;
-      firebase.database().ref('meetups').push(meetup)
-        .then((data) => {
-          key = data.key;
-          return key;
-        })
+      try {
+        const { key } = await firebase.database().ref('meetups').push(meetup);
+        const image = await firebase.storage().ref(`meetups/${key}`).put(payload.image);
+        const imageUrl = await image.ref.getDownloadURL();
+        await firebase.database().ref('meetups').child(key).update({ imageUrl });
+        commit('createMeetup', { ...meetup, imageUrl, id: key });
+      } catch (error) {
+        console.log(error);
+      }
+    },
 
-        // eslint-disable-next-line no-shadow
-        .then((key) => firebase.storage().ref(`meetups/${key}`).put(payload.image))
+    async loadMeetups({ commit }) {
+      try {
+        const meetupData = await firebase.database().ref('meetups').once('value');
+        const obj = meetupData.val();
+        const meetups = [];
 
-        .then((image) => image.ref.getDownloadURL())
-
-        // eslint-disable-next-line no-shadow
-        .then((imageUrl) => firebase.database().ref('meetups').child(key).update({ imageUrl }))
-
-        .then(() => {
-          commit('createMeetup', {
-            ...meetup,
-            imageUrl,
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const key in obj) {
+          meetups.push({
+            creatorId: obj[key].creatorId,
+            date: obj[key].date,
+            description: obj[key].description,
             id: key,
+            imageUrl: obj[key].imageUrl,
+            location: obj[key].location,
+            title: obj[key].title,
           });
-        })
 
-        .catch((error) => {
-          console.log(error);
-        });
+          commit('setLoadedMeetups', meetups);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
 
-    loadMeetups({ commit }) {
-      firebase.database().ref('meetups').once('value')
-        .then((data) => {
-          const meetups = [];
-          const obj = data.val();
-          // eslint-disable-next-line guard-for-in,no-restricted-syntax
-          for (const key in obj) {
-            meetups.push({
-              creatorId: obj[key].creatorId,
-              date: obj[key].date,
-              description: obj[key].description,
-              id: key,
-              imageUrl: obj[key].imageUrl,
-              location: obj[key].location,
-              title: obj[key].title,
-
-            });
-            commit('setLoadedMeetups', meetups);
-          }
-        })
-        .catch(
-          (error) => {
-            console.log(error);
-          },
-        );
-    },
-
-    updateMeetupData({ commit }, payload) {
+    async updateMeetupData({ commit }, payload) {
       const updateObj = {};
 
       if (payload.title) updateObj.title = payload.title;
       if (payload.description) updateObj.description = payload.description;
       if (payload.date) updateObj.date = payload.date;
 
-      firebase.database().ref('meetups').child(payload.id).update(updateObj)
-        .then(() => {
-          commit('updateMeetup', payload);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        await firebase.database().ref('meetups').child(payload.id).update(updateObj);
+        commit('updateMeetup', payload);
+      } catch (error) {
+        console.log(error);
+      }
     },
-
   },
 
   getters: {

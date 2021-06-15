@@ -11,7 +11,6 @@ import 'firebase/storage';
 import 'firebase/auth';
 import AlertCmp from './components/Shared/Alert.vue';
 import EditMeetupDetailsDialog from './components/Meetup/Edit/EditMeetupDetailsDialog.vue';
-import EditMeetupDateDialog from './components/Meetup/Edit/EditMeetupDateDialog.vue';
 import RegisterDialog from './components/Meetup/Registration/RegisterDialog.vue';
 
 Vue.config.productionTip = false;
@@ -19,7 +18,6 @@ Vue.config.productionTip = false;
 Vue.filter('date', DateFilter);
 Vue.component('app-alert', AlertCmp);
 Vue.component('app-edit-meetup-details-dialog', EditMeetupDetailsDialog);
-Vue.component('app-edit-meetup-date-dialog', EditMeetupDateDialog);
 Vue.component('app-register-meetup-dialog', RegisterDialog);
 
 const configOptions = {

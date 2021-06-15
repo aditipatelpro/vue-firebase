@@ -2,7 +2,7 @@
   <v-dialog
     v-model="editDialog"
     persistent
-    max-width="290"
+    max-width="350"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn

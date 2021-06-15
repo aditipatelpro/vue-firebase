@@ -16,10 +16,6 @@
 
       <v-card-subtitle class="pb-0">
         {{ meetup.date | date }} - {{ meetup.location }}
-        <!--        <app-edit-meetup-date-dialog-->
-        <!--          v-if="userIsCreator"-->
-        <!--          :meetup="meetup"-->
-        <!--        />-->
       </v-card-subtitle>
 
       <v-card-text class="text--primary">
